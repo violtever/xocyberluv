@@ -1,0 +1,2 @@
+Bỏ file giọng nói giới thiệu vào đây (ví dụ intro.mp3),
+rồi đặt voiceIntro: "assets/audio/voice/intro.mp3" trong public/js/config.js.

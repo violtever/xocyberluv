@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>my little world</title>
+  <meta name="description" content="Welcome to my little world — a small digital space that belongs to me.">
+  <meta name="theme-color" content="#cfeaff">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&family=Pixelify+Sans:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/world.css">
+  <link rel="modulepreload" href="js/config.js">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <!-- background layers (shared by every screen) -->
+  <div class="sky" aria-hidden="true">
+    <span class="sky__blob sky__blob--1"></span>
+    <span class="sky__blob sky__blob--2"></span>
+    <span class="sky__blob sky__blob--3"></span>
+    <span class="sky__grid"></span>
+    <span class="sky__rain"></span>
+  </div>
+  <div class="decor" id="decor" aria-hidden="true"></div>
+  <div class="fx-layer" id="fx-layer" aria-hidden="true"></div>
+  <div class="iris" aria-hidden="true"></div>
+
+  <!-- HUD: music + sound switches, synced across all screens -->
+  <div class="hud" role="group" aria-label="Audio controls">
+    <button class="hud__btn" id="hud-music" type="button" aria-pressed="true" aria-label="Background music">
+      <span class="hud__disc" aria-hidden="true"></span><span class="hud__label">MUSIC</span> <b>ON</b>
+    </button>
+    <button class="hud__btn" id="hud-sound" type="button" aria-pressed="true" aria-label="Sound effects and voice">
+      <span class="hud__icon" data-px="note" aria-hidden="true"></span><span class="hud__label">SOUND</span> <b>ON</b>
+    </button>
+  </div>
+
+  <!-- ===================== 1. WELCOME ===================== -->
+  <section class="screen screen--welcome is-active" id="welcome" aria-labelledby="welcome-title">
+    <div class="orbit" aria-hidden="true">
+      <span class="orbit__i orbit__i--1" data-px="heart"></span>
+      <span class="orbit__i orbit__i--2" data-px="star"></span>
+      <span class="orbit__i orbit__i--3" data-px="cloud"></span>
+      <span class="orbit__i orbit__i--4" data-px="drop"></span>
+      <span class="orbit__i orbit__i--5" data-px="bow"></span>
+      <span class="orbit__i orbit__i--6" data-px="flower"></span>
+      <span class="orbit__i orbit__i--7" data-px="sparkle"></span>
+      <span class="orbit__i orbit__i--8" data-px="sparkle"></span>
+    </div>
+
+    <div class="popup popup--mini popup--note" aria-hidden="true">
+      <span class="popup__bar"><i></i>notice.txt</span>
+      <span class="popup__body">☂ forecast: soft rain<br>mood: 100% cozy</span>
+    </div>
+    <div class="popup popup--mini popup--alert" aria-hidden="true">
+      <span class="popup__bar"><i></i>system</span>
+      <span class="popup__body"><span data-px="heart"></span> 1 visitor detected!</span>
+    </div>
+
+    <div class="win win--welcome">
+      <header class="win__bar">
+        <span class="win__title"><span data-px="sparkle"></span>welcome.exe</span>
+        <span class="win__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </header>
+      <div class="win__body welcome">
+        <p class="welcome__kicker mono">// hello, visitor ✦ connection: soft</p>
+        <h1 class="welcome__title" id="welcome-title">
+          <span class="welcome__line">WELCOME TO</span>
+          <span class="welcome__line welcome__line--big">MY LITTLE WORLD</span>
+        </h1>
+        <p class="welcome__sub">A little space that belongs to me.</p>
+
+        <div class="voice" id="voice-row" hidden>
+          <button class="btn btn--soft voice__btn" id="voice-btn" type="button">
+            <span class="voice__glyph" aria-hidden="true">▶</span><span class="voice__label">hear my hello</span>
+          </button>
+          <span class="voice__wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        </div>
+
+        <button class="btn btn--primary btn--xl" id="welcome-start" type="button" data-sfx="none" autofocus>
+          <span>START</span><span aria-hidden="true">▸</span>
+        </button>
+        <p class="welcome__hint mono">best with sound on ♪</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 2. LOADING ===================== -->
+  <section class="screen screen--loading" id="loading" hidden aria-labelledby="boot-title">
+    <div class="win win--boot">
+      <header class="win__bar">
+        <span class="win__title"><span data-px="cloud"></span>system_boot.exe</span>
+        <span class="win__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </header>
+      <div class="win__body boot">
+        <div class="boot__critters" aria-hidden="true">
+          <span data-px="heart"></span><span data-px="star"></span><span data-px="drop"></span><span data-px="cloud"></span><span data-px="bow"></span>
+        </div>
+        <h2 class="boot__title" id="boot-title">loading my little world</h2>
+        <div class="boot__meter" id="boot-meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Loading progress">
+          <span class="boot__bar" id="boot-bar"></span>
+        </div>
+        <p class="boot__pct" id="boot-pct">0%</p>
+        <ol class="boot__log mono" id="boot-log" aria-live="polite"></ol>
+        <button class="btn btn--primary btn--xl btn--enter" id="enter-btn" type="button" data-sfx="none" hidden>
+          [ ENTER MY WORLD ]
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 3. MAIN PROFILE ===================== -->
+  <div class="world" id="world" hidden>
+    <header class="menubar">
+      <span class="menubar__brand"><span data-px="drop"></span><b id="menubar-name">little world OS</b></span>
+      <nav class="menubar__nav" aria-label="Sections">
+        <a href="#home" data-nav="home">profile</a>
+        <a href="#about" data-nav="about">about</a>
+        <a href="#interests" data-nav="interests">interests</a>
+        <a href="#favorites" data-nav="favorites">favorites</a>
+        <a href="#links" data-nav="links">links</a>
+      </nav>
+      <span class="menubar__meta mono">
+        <span id="menubar-track" class="menubar__track"></span>
+        <span id="menubar-status" class="menubar__status"></span>
+        <span id="menubar-clock"></span>
+      </span>
+    </header>
+
+    <main class="desktop" id="main">
+      <article class="win reveal win--profile" id="home" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="user"></span>profile.card</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="heart" aria-label="Send a little heart">♡</button></span>
+        </header>
+        <div class="win__body" id="profile-body"></div>
+      </article>
+
+      <article class="win reveal win--status" id="win-status" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="cloud"></span>my_status.txt</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="status-body"></div>
+      </article>
+
+      <article class="win reveal win--player" id="win-player" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="headphones"></span>currently_listening.mp3</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="player-body"></div>
+      </article>
+
+      <article class="win reveal win--about" id="about" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="folder"></span>about_me.sys</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="about-body"></div>
+      </article>
+
+      <article class="win reveal win--facts" id="win-facts" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="star"></span>random_facts.exe</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="facts-body"></div>
+      </article>
+
+      <article class="win reveal win--letter" id="notes" data-win>
+        <header class="win__bar">
+          <span class="win__title"><span data-px="mail"></span>for_visitors.msg</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="heart" aria-label="Send a little heart">♡</button></span>
+        </header>
+        <div class="win__body" id="letter-body"></div>
+      </article>
+
+      <section class="win reveal win--interests" id="interests" data-win aria-labelledby="interests-title">
+        <header class="win__bar">
+          <span class="win__title" id="interests-title"><span data-px="sparkle"></span>my_interests/</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="interests-body"></div>
+      </section>
+
+      <section class="win reveal win--favorites" id="favorites" data-win aria-labelledby="favorites-title">
+        <header class="win__bar">
+          <span class="win__title" id="favorites-title"><span data-px="heart"></span>my_favorites.collection</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="minimize" aria-expanded="true" aria-label="Minimize window">_</button></span>
+        </header>
+        <div class="win__body" id="favorites-body"></div>
+      </section>
+
+      <section class="win reveal win--links" id="links" data-win aria-labelledby="links-title">
+        <header class="win__bar">
+          <span class="win__title" id="links-title"><span data-px="chat"></span>find_me.lnk</span>
+          <span class="win__ctrls"><button class="win__btn" type="button" data-action="heart" aria-label="Send a little heart">♡</button></span>
+        </header>
+        <div class="win__body" id="links-body"></div>
+      </section>
+
+      <footer class="footer reveal">
+        <p class="mono">© <span id="footer-year"></span> <span id="footer-name"></span> · made with ♡ and a little rain</p>
+        <a class="btn btn--ghost btn--sm" href="#home" data-nav="home">↑ back to top</a>
+      </footer>
+    </main>
+
+    <nav class="dock" aria-label="Quick navigation">
+      <a class="dock__item" href="#home" data-nav="home"><span data-px="user"></span><em>profile</em></a>
+      <a class="dock__item" href="#about" data-nav="about"><span data-px="folder"></span><em>about</em></a>
+      <a class="dock__item" href="#interests" data-nav="interests"><span data-px="sparkle"></span><em>interests</em></a>
+      <a class="dock__item" href="#favorites" data-nav="favorites"><span data-px="heart"></span><em>favorites</em></a>
+      <a class="dock__item" href="#notes" data-nav="notes"><span data-px="mail"></span><em>note</em></a>
+      <a class="dock__item" href="#links" data-nav="links"><span data-px="chat"></span><em>links</em></a>
+    </nav>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <dialog class="modal win" id="modal" aria-labelledby="modal-title">
+    <header class="win__bar">
+      <span class="win__title" id="modal-title"></span>
+      <span class="win__ctrls"><button class="win__btn" id="modal-close" type="button" aria-label="Close">×</button></span>
+    </header>
+    <div class="win__body" id="modal-body"></div>
+  </dialog>
+
+  <noscript><p class="noscript">This little world needs JavaScript to open its doors ☂</p></noscript>
+</body>
+</html>
